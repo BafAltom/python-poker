@@ -10,10 +10,10 @@ class Poker:
 		self.board = []
 		self.pot = 0
 		self.players = []
-		self.players.append(Player.AI("Bot", 1000, True))
-		self.players.append(Player.AI("Hal", 1000, True))
-		self.players.append(Player.AI("Marvin", 1000, True))
-		self.players.append(Player.AI("R2D2", 1000, True))
+		self.players.append(Player.AI("Bot", 1000, False))
+		self.players.append(Player.AI("Hal", 1000, False))
+		self.players.append(Player.AI("Marvin", 1000, False))
+		self.players.append(Player.AI("R2D2", 1000, False))
 		self.players.append(Player.Human("Guy", 1000))
 		assert len(self.players) >= 2, "Need at least 2 players"
 		self.smallblindPlayer = 0
@@ -22,30 +22,18 @@ class Poker:
 		self.bigblindAmount = 20
 		self.turn = 0
 
+
 	def initTurn(self):
-		print("Turn #" + str(self.turn))
-		print("The blinds are ", self.smallblindAmount, ",", self.bigblindAmount)
 		assert self.pot == 0, "Pot is not empty at start of turn"
-
 		self.deck.shuffle()
-
 		for player in self.players:
 			player.initTurn()
-
-		for player in self.players*2:
+		for player in self.players*2:  # TODO : Distribute cards "the right way"
 			player.giveCard(self.deck.pop())
-
-		# Small Blind
 		self.smallblindPlayer += 1
 		self.smallblindPlayer %= len(self.players)
-		self.pot += self.players[self.smallblindPlayer].bet(self.smallblindAmount)
-		print(str(self.players[self.smallblindPlayer]), "bets the small blind. Pot is now", str(self.pot))
-
-		# Big blind
 		self.bigblindPlayer += 1
 		self.bigblindPlayer %= len(self.players)
-		self.pot += self.players[self.bigblindPlayer].bet(self.bigblindAmount)
-		print(str(self.players[self.bigblindPlayer]), "bets the big blind. Pot is now", str(self.pot))
 
 	def takeAllCardsFrom(self, player):
 		buff = player.takeAllCards()
@@ -55,42 +43,47 @@ class Poker:
 	def endTurn(self):
 		for player in self.players:
 			self.takeAllCardsFrom(player)
-
+		self.players = list(filter(lambda x: x.money > 0, self.players))
 		# Empty the muck in the deck
 		while len(self.muck) > 0:
 			self.deck.push(self.muck.pop())
-
 		# Empty the board in the deck
 		while len(self.board) > 0:
 			self.deck.push(self.board.pop())
-
 		self.turn += 1
 
+	def isFirstBettingRound(self):
+		return len(self.board) == 0
 
 	def bettingRound(self):
 		currentBet = -1
-		lastRaisePlayer = self.bigblindPlayer
+		lastRaisePlayer = (self.smallblindPlayer - 1) % len(self.players)
 		p = (lastRaisePlayer + 1) % len(self.players)
 		while(p != lastRaisePlayer):
 			player = self.players[p]
 			decision = -2
-			if (player.folded):
-				print("player", str(player), "has folded")
-			while not player.folded and decision < currentBet:
-				decision = player.chooseAction(currentBet)
+			#if (player.folded):
+				#print("player", str(player), "has folded")
+			while (not player.folded) and (decision < currentBet):
+				if currentBet == -1 and self.isFirstBettingRound() and player == self.players[self.smallblindPlayer]:
+					decision = self.smallblindAmount
+				elif currentBet == -1 and self.isFirstBettingRound() and player == self.players[self.smallblindPlayer]:
+					decision = self.bigblindAmount
+				else:
+					decision = player.chooseAction(currentBet)
 				print("player", str(player), "decides", decision)
 				if (decision == "F"):
 					player.folded = True
 					self.takeAllCardsFrom(player)
-					print(str(player) + " folded")
+					#print(str(player) + " folded")
 				elif (decision >= currentBet):
 					self.pot += player.bet(decision)
-					print(str(player) + " bet " + str(decision))
+					#print(str(player) + " bet " + str(decision))
 					if (decision > currentBet):
 						currentBet = decision
 						lastRaisePlayer = p
-				else:
-					print("You must bet above current bet : ", str(currentBet))
+				#else:
+					#print("You must bet above current bet : ", str(currentBet))
 			p = (p + 1) % len(self.players)
 		# Reinitialize players
 		for player in self.players:
@@ -134,6 +127,7 @@ class Poker:
 
 	def play(self):
 		while(True):
+			print("Turn #", self.turn)
 			self.initTurn()
 
 			self.bettingRound()
