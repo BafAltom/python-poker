@@ -20,13 +20,10 @@ class Deck:
 		return len(self.cards)
 
 	def shuffle(self):
-		c1, c2 = -1, -1
-		for i in range(100*len(self)):
-			c1 = random.randint(0, len(self) - 1)
-			c2 = random.randint(0, len(self) - 1)
-			#print("switched ", c1, " and ", c2)
-			self.cards[c1], self.cards[c2] = self.cards[c2], self.cards[c1]
-
+		# Fisher-Yates  http://en.wikipedia.org/wiki/Fisher%E2%80%93Yates_shuffle
+		for i in range(len(self) - 1, 1, -1):
+			j = random.randint(1,i)
+			self.cards[j], self.cards[i] = self.cards[i], self.cards[j]
 	def __repr__(self):
 		reprStr = ""
 		reprStr += "Card Deck ("
