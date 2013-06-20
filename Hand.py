@@ -117,13 +117,14 @@ class Hand:
 		return 0
 
 	def __repr__(self):
-		reprStr = "("
-		for card in self.cards:
-			reprStr += str(card) + " "
-		reprStr += ")"
+		reprStr = ""
 		for name, value in Hand.handTypeDict.items():
 			if (self.handType == value):
 				reprStr += name
+		reprStr += " ("
+		for card in self.cards:
+			reprStr += str(card) + " "
+		reprStr += ")"
 		return reprStr
 
 	@staticmethod

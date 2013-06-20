@@ -24,6 +24,7 @@ class Deck:
 		for i in range(len(self) - 1, 1, -1):
 			j = random.randint(1,i)
 			self.cards[j], self.cards[i] = self.cards[i], self.cards[j]
+
 	def __repr__(self):
 		reprStr = ""
 		reprStr += "Card Deck ("

@@ -1,6 +1,7 @@
 import random
 
 class Player(object):
+
 	currentId = 0
 
 	@staticmethod
@@ -13,16 +14,25 @@ class Player(object):
 		self.name = name
 		self.money = money
 		self.cards = []
-		self.folded = False
 		self.currentBet = 0
+		self.folded = False
+		self.allin = False
 
 	def initTurn(self):
 		assert len(self.cards) == 0, "Player still has cards at the start of a turn"
 		assert self.money > 0, "Player " + str(self) + " does not have any money at the start of a turn"
 		self.folded = False
+		self.allin = False
+		self.currentBet = 0
 
 	def chooseAction(self, currentBet):
+		"""
+		returns "F" [fold], "A" [all-in] or an amount (check/raise)
+		"""
 		raise Exception("Player.chooseAction is an Abstract method!")
+
+	def canBet(self):
+		return not (self.folded or self.allin)
 
 	def giveCard(self, card):
 		assert len(self.cards) < 2, "Player already has 2 cards or more"
@@ -38,9 +48,11 @@ class Player(object):
 		return self.name + "($" + str(self.money) + ")"
 
 	def bet(self, amount):
-		tmp = min(amount, self.money)
-		self.money -= tmp
-		return tmp
+		toPay = amount - self.currentBet
+		moneyBuffer = min(toPay, self.money)
+		self.currentBet += moneyBuffer
+		self.money -= moneyBuffer
+		return moneyBuffer
 
 class AI(Player):
 	def __init__(self, name, money, alwaysFollow=False):
@@ -63,8 +75,8 @@ class Human(Player):
 		super(Human, self).giveCard(card)
 
 	def chooseAction(self, currentBet):
-		decision = input("What is " + str(self) + " going to do?")
-		if (decision == "F"):
+		decision = input("What is " + str(self) + " going to do? (current bet is " + str(currentBet) + ")")
+		if (decision in ["F", "A"]):
 			return decision
 		else:
 			# TODO : try/catch
