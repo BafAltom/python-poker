@@ -1,6 +1,7 @@
 from Card import Card
 import random
 
+
 class Deck:
 	def __init__(self, shuffle=False):
 		self.cards = []
@@ -22,7 +23,7 @@ class Deck:
 	def shuffle(self):
 		# Fisher-Yates  http://en.wikipedia.org/wiki/Fisher%E2%80%93Yates_shuffle
 		for i in range(len(self) - 1, 1, -1):
-			j = random.randint(1,i)
+			j = random.randint(1, i)
 			self.cards[j], self.cards[i] = self.cards[i], self.cards[j]
 
 	def __repr__(self):

@@ -1,5 +1,6 @@
 import random
 
+
 class Player(object):
 
 	currentId = 0
@@ -54,6 +55,7 @@ class Player(object):
 		self.money -= moneyBuffer
 		return moneyBuffer
 
+
 class AI(Player):
 	def __init__(self, name, money, alwaysFollow=False):
 		Player.__init__(self, name, money)
@@ -65,6 +67,7 @@ class AI(Player):
 		if (currentBet > self.money):
 			return "F"  # TODO : able to do all-in
 		return random.choice(["F", random.randint(currentBet, self.money)])
+
 
 class Human(Player):
 	def __init__(self, name, money):

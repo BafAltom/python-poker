@@ -1,8 +1,8 @@
-import Card
 import Deck
 import Player
 from Hand import Hand
 import sys
+
 
 class Poker:
 	def __init__(self):
@@ -26,7 +26,6 @@ class Poker:
 		self.initalMoneyAmount = 0
 		for p in self.players:
 			self.initalMoneyAmount += p.money
-
 
 	def initTurn(self):
 		print("Turn ", self.turn)
@@ -152,7 +151,7 @@ class Poker:
 		else:
 			print("No winner! Pot is distributed between players")
 			activePlayers = list(filter(lambda x: not x.folded, self.players))
-			assert self.pot % len(activePlayers) == 0, str(self.pot) + " != " + str(len(activePlayer))
+			assert self.pot % len(activePlayers) == 0, str(self.pot) + " != " + str(len(activePlayers))
 			amountPerPlayer = int(self.pot / len(activePlayers))
 			for p in activePlayers:
 				assert self.pot >= amountPerPlayer
@@ -165,7 +164,7 @@ class Poker:
 			print("")
 		with open("title.txt") as titleF:
 			for line in titleF:
-				print(line[:-1]) # remove trailing \n
+				print(line[:-1])  # remove trailing \n
 		while(len(self.players) > 1):
 			self.initTurn()
 
@@ -187,7 +186,7 @@ class Poker:
 
 if __name__ == "__main__":
 	if (sys.version_info[0] < 3):
-		print "PLEASE LAUNCH WITH PYTHON3"
+		print("PLEASE LAUNCH WITH PYTHON3")
 		sys.exit()
 	poker = Poker()
 	poker.play()

@@ -2,8 +2,9 @@ from Deck import Deck
 from Card import Card
 import copy
 
+
 class Hand:
-	handTypeDict = {"High":1, "Pair":2, "Two Pairs":3, "Three of a kind":4, "Straight": 5, "Flush":6, "Full House":7, "Four of a kind":8, "Straight Flush":9}
+	handTypeDict = {"High": 1, "Pair": 2, "Two Pairs": 3, "Three of a kind": 4, "Straight": 5, "Flush": 6, "Full House": 7, "Four of a kind": 8, "Straight Flush": 9}
 
 	def __init__(self, cards):
 		assert len(cards) == 5, "Hand : cards does not have 5 cards " + str(self.cards)
