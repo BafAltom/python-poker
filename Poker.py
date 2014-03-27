@@ -72,7 +72,7 @@ class Poker:
         currentBet = 0
         lastRaisePlayer = (self.smallblindPlayer - 1) % len(self.players)
         p = (lastRaisePlayer + 1) % len(self.players)
-        while(p != lastRaisePlayer):
+        while p != lastRaisePlayer:
             player = self.players[p]
             decision = -1
 
