@@ -61,6 +61,10 @@ class AI(Player):
         Player.__init__(self, name, money)
         self.alwaysFollow = alwaysFollow
 
+    def giveCard(self, card):
+        print(self.name, "received a card")
+        super()
+
     def chooseAction(self, currentBet):
         if (self.alwaysFollow):
             return currentBet
@@ -74,7 +78,7 @@ class Human(Player):
         Player.__init__(self, name, money)
 
     def giveCard(self, card):
-        print("Received : ", str(card))
+        print("You received : ", str(card))
         super(Human, self).giveCard(card)
 
     def chooseAction(self, currentBet):

@@ -37,15 +37,19 @@ class Poker:
             totalMoney += p.money
         assert totalMoney == self.initalMoneyAmount
 
-        self.deck.shuffle()
-        for player in self.players:
-            player.initTurn()
-        for player in self.players*2:  # TODO : Distribute cards "the right way" (beginning with the small bet)
-            player.giveCard(self.deck.pop())
         self.smallblindPlayer += 1
         self.smallblindPlayer %= len(self.players)
         self.bigblindPlayer += 1
         self.bigblindPlayer %= len(self.players)
+
+        self.deck.shuffle()
+        for player in self.players:
+            player.initTurn()
+        # Distribute cards beginning with small blind
+        for i in range(2 * len(self.players)):
+            pID = (self.smallblindPlayer + i) % len(self.players)
+            player = self.players[pID]
+            player.giveCard(self.deck.pop())
 
     def takeAllCardsFrom(self, player):
         buff = player.takeAllCards()
