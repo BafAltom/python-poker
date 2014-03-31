@@ -124,7 +124,7 @@ class Poker:
         print(self.board)
 
     def onePlayerLeft(self):
-        return len(list(filter(lambda x: not x.folded, self.players))) == 1
+        return len([p for p in self.players if not p.folded]) == 1
 
     def findWinner(self):
         if self.onePlayerLeft():
