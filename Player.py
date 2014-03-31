@@ -63,7 +63,7 @@ class AI(Player):
 
     def giveCard(self, card):
         print(self.name, "received a card")
-        super()
+        super().giveCard(card)
 
     def chooseAction(self, currentBet):
         if (self.alwaysFollow):
