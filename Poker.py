@@ -59,7 +59,7 @@ class Poker:
     def endTurn(self):
         for player in self.players:
             self.takeAllCardsFrom(player)
-        self.players = list(filter(lambda x: x.money > 0, self.players))
+        self.players = [p for p in self.players if p.money > 0]
         # Empty the muck in the deck
         while len(self.muck) > 0:
             self.deck.push(self.muck.pop())
