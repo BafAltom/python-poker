@@ -34,9 +34,7 @@ class Deck:
         reprStr = ""
         reprStr += "Card Deck ("
         reprStr += str(len(self))
-        reprStr += ")\n"
-        for card in self.cards:
-            reprStr += str(card) + "\n"
+        reprStr += ")"
         return reprStr
 
 
