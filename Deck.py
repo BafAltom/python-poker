@@ -3,6 +3,7 @@ import random
 
 
 class Deck:
+
     def __init__(self, shuffle=False):
         self.cards = []
         for rank in Card.rankDict:
@@ -10,6 +11,9 @@ class Deck:
                 self.cards.append(Card(rank, suit))
         if (shuffle):
             self.shuffle()
+
+    def __iter__(self):
+        return DeckIterator(self)
 
     def pop(self):
         return self.cards.pop()
@@ -35,6 +39,26 @@ class Deck:
             reprStr += str(card) + "\n"
         return reprStr
 
+
+class DeckIterator(object):
+
+    def __init__(self, deck):
+        self.deck = deck
+        self.counter = 0
+
+    def __iter__(self):
+        return self
+
+    def __next__(self):
+        if self.counter == len(self.deck):
+            raise StopIteration
+        nextCard = self.deck.cards[self.counter]
+        self.counter += 1
+        return nextCard
+
+
 if __name__ == "__main__":
     deck = Deck(True)
     print(deck)
+    for card in deck:
+        print("\t", card)
