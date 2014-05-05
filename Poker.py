@@ -1,6 +1,6 @@
 import Deck
-import Player
-from Hand import Hand
+from Poker import Player
+from Poker.Hand import Hand
 import sys
 
 
@@ -167,7 +167,7 @@ class Poker:
     def play(self):
         for i in range(100):
             print("")
-        with open("title.txt") as titleF:
+        with open("Poker/title.txt") as titleF:
             for line in titleF:
                 print(line[:-1])  # remove trailing \n
         while(len(self.players) > 1):
