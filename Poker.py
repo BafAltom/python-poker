@@ -5,6 +5,7 @@ import sys
 
 
 class Poker:
+
     def __init__(self):
         self.deck = Deck.Deck(True)
         self.muck = []

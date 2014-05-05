@@ -57,6 +57,7 @@ class Player(object):
 
 
 class AI(Player):
+
     def __init__(self, name, money, alwaysFollow=False):
         Player.__init__(self, name, money)
         self.alwaysFollow = alwaysFollow
@@ -74,6 +75,7 @@ class AI(Player):
 
 
 class Human(Player):
+
     def __init__(self, name, money):
         Player.__init__(self, name, money)
 
